@@ -16,7 +16,7 @@ const clearTaskData = () => {
 
     tasks.length = 0;
     SaveDataToLocalStorage();
-    printTasks();
+    onLoad();
 }
 
 const sortTasks = () => {
@@ -34,7 +34,7 @@ const UpdateDataByIndexToLocalStorage = (id, newTasks) => {
     }
     sortTasks();
     SaveDataToLocalStorage();
-    printTasks();
+    onLoad();
 }
 
 const RemoveDataByIndexToLocalStorage = (id) => {
@@ -46,7 +46,7 @@ const RemoveDataByIndexToLocalStorage = (id) => {
     tasks.length = 0;
     tasks.push(...newTasks);
     SaveDataToLocalStorage();
-    printTasks();
+    onLoad();
 }
 
 const LoadFromLocalStorage = () => {
@@ -66,11 +66,17 @@ const clearTaskInput = () => {
     document.getElementById('taskInput').value = '';
 }
 
+const onLoad = () => {
+    printTasks();
+    OnCheckboxChecked();
+    onremoveClicked();
+}
+
 const printTasks = () => {
     const taskContainer = document.getElementById('task-container');
     taskContainer.innerHTML = '';
 
-    const taskHTML = tasks.map((task) => {
+    const tasksHTML = tasks.map((task) => {
         return `
         <div class="task-item">
             <div class="task-info">
@@ -80,8 +86,10 @@ const printTasks = () => {
             <button type="button" class="task-removeBtn" id="button${task.id}" aria-label="close" style="background: none; border:none; cursor:pointer;font-size:1em;"> &times; </button>
         </div>`; //
     }).join(""); //
-    taskContainer.innerHTML = taskHTML;
+    taskContainer.innerHTML = tasksHTML;
+}
 
+const OnCheckboxChecked = () => {
     tasks.forEach((task) => {
 
         let checkbox = document.getElementById(`cb${task.id}`);
@@ -102,7 +110,9 @@ const printTasks = () => {
             UpdateDataByIndexToLocalStorage(task.id, { isCompleted: task.isCompleted });
         });
     });
+}
 
+const onremoveClicked = () => {
     tasks.forEach((task) => {
         let closeButton = document.getElementById(`button${task.id}`);
         closeButton.addEventListener('click', () => {
@@ -121,7 +131,7 @@ const onAddTaskBtnClick = () => {
     addTask(taskName);
     SaveDataToLocalStorage();
     clearTaskInput();
-    printTasks();
+    onLoad();
 }
 
 /* #endregion */
@@ -134,7 +144,7 @@ document.getElementById('clearAllBtn').addEventListener('click', clearTaskData);
 
 window.addEventListener('load', () => {
     LoadFromLocalStorage();
-    printTasks();
+    onLoad();
 });
 
 //#endregion
