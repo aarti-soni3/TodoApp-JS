@@ -9,6 +9,7 @@ const addTask = (taskName) => {
         isCompleted: false
     };
     tasks.push(task);//
+    sortTasks();
 }
 
 const clearTaskData = () => {
@@ -18,17 +19,22 @@ const clearTaskData = () => {
     printTasks();
 }
 
+const sortTasks = () => {
+    tasks.sort((a, b) => a.isCompleted - b.isCompleted);
+}
+
 const SaveDataToLocalStorage = () => {
     localStorage.setItem('tasks', JSON.stringify(tasks));
 }
 
-const UpdateDataByIndexToLocalStorage = (id, newData) => {
-    console.log(id, newData);
+const UpdateDataByIndexToLocalStorage = (id, newTasks) => {
     let index = tasks.findIndex((task) => task.id === id);
     if (index !== -1) {
-        tasks[index] = { ...tasks[index], ...newData };
+        tasks[index] = { ...tasks[index], ...newTasks };
     }
+    sortTasks();
     SaveDataToLocalStorage();
+    printTasks();
 }
 
 const RemoveDataByIndexToLocalStorage = (id) => {
@@ -37,7 +43,7 @@ const RemoveDataByIndexToLocalStorage = (id) => {
         if (task.id !== id)
             newTasks.push(task);
     })
-    tasks.length=0;
+    tasks.length = 0;
     tasks.push(...newTasks);
     SaveDataToLocalStorage();
     printTasks();
@@ -65,11 +71,15 @@ const printTasks = () => {
     taskContainer.innerHTML = '';
 
     const taskHTML = tasks.map((task) => {
-        return `<input type="checkbox" id="cb${task.id}" ${task.isCompleted ? "checked" : " "} />
-        <label for="cb${task.id}" id="label${task.id}"  style = "${task.isCompleted ? 'text-decoration: line-through' : 'none'}"> 
-         ${task.taskName}</label>
-         <button type="button" id="button${task.id}" aria-label="close" style="background: none; border:none; cursor:pointer;font-size:1em;"> &times; </button>`; //
-    }).join('<br/>'); //
+        return `
+        <div class="task-item">
+            <div class="task-info">
+                <input type="checkbox" id="cb${task.id}" ${task.isCompleted ? "checked" : " "} />
+                <label for="cb${task.id}" id="label${task.id}"  style = "${task.isCompleted ? 'text-decoration: line-through' : 'none'}">${task.taskName}</label>
+            </div>
+            <button type="button" class="task-removeBtn" id="button${task.id}" aria-label="close" style="background: none; border:none; cursor:pointer;font-size:1em;"> &times; </button>
+        </div>`; //
+    }).join(""); //
     taskContainer.innerHTML = taskHTML;
 
     tasks.forEach((task) => {

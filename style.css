@@ -1,0 +1,67 @@
+body {
+    background-color: cadetblue;
+}
+
+input[type="checkbox"] {
+    width: 1.2em;
+    height: 1.2em;
+    border-radius: 5em;
+
+}
+
+#main-container {
+    margin: auto;
+    text-align: center;
+    width: 40%;
+}
+
+#task-container {
+    margin: 2em 0em;
+    text-align: left;
+    line-height: 1.4em;
+}
+
+.task-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1em;
+    margin-bottom: 0.5em;
+}
+
+.task-info {
+    display: flex;
+    align-items: flex-start;
+
+}
+
+button {
+    border-radius: 1em;
+    border: none;
+    width: 5em;
+    height: 1.8em;
+    color: white;
+    background-color: #014f52;
+    margin-top : 1em;
+}
+
+h1{
+    color: #004245;
+}
+
+button.task-removeBtn {
+    width: 1em;
+    font-size: 10em;
+    color : black
+}
+
+button.task-removeBtn:hover {
+    color: white;
+}
+
+#taskInput {
+    border-radius: 1em;
+    border: 1em;
+    width: 15em;
+    height: 1.8em;
+}
